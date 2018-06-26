@@ -48,6 +48,5 @@ function tryConnect2Lake(maxRetry = 0) {
 }
 
 
-
-exports.MainDatabase = lakeDB;
+exports.LakeDBInstance = lakeDB;
 exports.TryConnectLake = tryConnect2Lake;

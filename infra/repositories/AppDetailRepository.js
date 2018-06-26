@@ -2,6 +2,9 @@ const CheerIO = require('cheerio');
 const CustomResult = require('./../../shared/CustomResult');
 const CustomHttpGet = require('./../../shared/CustomFuncs').tryGet;
 const AppDetail = require('./../../domain/valueObjects').AppDetail;
+const AppDetailSequelize = require('./../../infra/orms/mssql').AppDetailSequelize;
+const AppDetailModel = require('./../../infra/orms/mssql').AppDetailModel;
+
 // const metaTagReg = /<meta(?:>|\s+([\s\S]*?)>)/ig;
 const errorReg = /<div\sid=\"error-section\"/ig;
 
@@ -40,6 +43,22 @@ module.exports = class AppDetailRepository {
             return Promise.resolve(new CustomResult().withCode(400).withMessage(`Object is undefined`));
         }
         appDetailObj.checkLegality();
+        // let appDetailModel = await AppDetailModel.findOne({ app_name: appDetailObj.appName });
+        // console.log(appDetailModel);
+
+        let appDetailModel = new AppDetailModel();
+        appDetailModel.app_name = appDetailObj.appName;
+        appDetailModel.category = appDetailObj.category;
+        appDetailModel.description = appDetailObj.description;
+        appDetailModel.icon_url = appDetailObj.iconUrl;
+        appDetailModel.PEGI = appDetailObj.PEGI;
+        appDetailModel.screenshot_url = appDetailObj.screenShotUrl;
+        appDetailModel.title = appDetailObj.title;
+
+        appDetailModel = await AppDetailSequelize.create(appDetailModel);
+
+        console.log(appDetailModel);
+        
 
         return Promise.resolve(new CustomResult());
     }
