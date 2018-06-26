@@ -1,8 +1,10 @@
+global.Promise = require('bluebird');
 const Express = require('express');
 const BodyParser = require('body-parser');
 const AppRouter = require('./AppRouter');
+const CustomDatabase = require('./../shared/CustomDatabase');
 
-global.Promise = require('bluebird');
+CustomDatabase.TryConnectLake(0);
 
 const app = Express();
 app.use(BodyParser.json({ limit: '10mb' }));
