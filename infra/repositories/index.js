@@ -1,0 +1,1 @@
+exports.AppDetailRepository = require('./AppDetailRepository');

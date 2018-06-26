@@ -1,0 +1,1 @@
+App details crewler for google play
