@@ -1,9 +1,10 @@
 {
   "name": "node-apps-crewler",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Crewler for apps detail on google play website",
   "main": "bin/index.js",
   "scripts": {
+    "local": "cross-env NODE_ENV=local node bin/index.js",
     "start": "node bin/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +19,8 @@
     "request": "^2.87.0",
     "sequelize": "^4.38.0",
     "tedious": "^2.6.1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
   }
 }

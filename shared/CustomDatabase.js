@@ -1,24 +1,15 @@
 const Sequelize = require('sequelize');
 const AppLogger = require('./CustomLogger').AppLogger();
 const SqlLogger = require('./CustomLogger').SqlLogger();
+const AppConfig = require('./../shared/CustomConfig').AppConfig();
 
-const cfg = {
-    host: '10.57.52.147',
-    port: 1433,
-    dbName: 'lakeDev',
-    user: 'raduser',
-    password: 'rad!User',
-    dialect: 'mssql',
-}
-const lakeDB = new Sequelize(cfg.dbName, cfg.user, cfg.password, {
-    dialect: cfg.dialect,
-    host: cfg.host,
-    port: cfg.port,
-    pool: {
-        min: 3,
-        max: 10,
-        acquire: 60000
-    },
+
+const lakeRoot = AppConfig.databases.lakeMain;
+const lakeDB = new Sequelize(lakeRoot.dbName, lakeRoot.user, lakeRoot.password, {
+    dialect: lakeRoot.dialect,
+    host: lakeRoot.host,
+    port: lakeRoot.port,
+    pool: lakeRoot.poolSetting,
     logging: str => SqlLogger.debug(str)
 });
 
@@ -28,12 +19,12 @@ function tryConnect2Lake(maxRetry = 0) {
             return rej(`Can not open lake over 5 times`);
         }
         lakeDB.authenticate().then(() => {
-            console.log(`Success connect to ${cfg.host}:${cfg.port}`);
-            AppLogger.info(`Success connect to ${cfg.host}:${cfg.port}`);
+            console.log(`Success connect to ${lakeRoot.host}:${lakeRoot.port}`);
+            AppLogger.info(`Success connect to ${lakeRoot.host}:${lakeRoot.port}`);
             return res(true);
         }).catch(ex => {
-            console.error(`Authenticate failed: ${ex}`);
-            AppLogger.error(`Authenticate failed: ${ex}`)
+            console.error(`Authenticate lakeDB failed: ${ex}`);
+            AppLogger.error(`Authenticate lakeDB failed: ${ex}`)
             return res(false);
         })
     }).then(success => {
@@ -47,7 +38,7 @@ function tryConnect2Lake(maxRetry = 0) {
             console.log(`Retry connect to lake ${maxRetry}`);
             AppLogger.info(`Retry connect to lake ${maxRetry}`);
             tryConnect2Lake(maxRetry);
-        }, 60000);
+        }, lakeRoot.retryConnectInterval);
     }).catch(e => {
         console.error(e);
         process.exit(0);

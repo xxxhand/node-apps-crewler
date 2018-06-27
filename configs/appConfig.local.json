@@ -1,0 +1,19 @@
+{
+    "serverPort": 8082,
+    "databases": {
+        "lakeMain": {
+            "host": "10.57.52.147",
+            "port": 1433,
+            "user": "raduser",
+            "password": "rad!User",
+            "dbName": "lakeDev",
+            "dialect": "mssql",
+            "poolSetting": {
+                "max": 10,
+                "min": 3,
+                "acquire": 60000
+            },
+            "retryConnectInterval": 60000 
+        }
+    }
+}

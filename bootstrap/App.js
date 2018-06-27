@@ -1,9 +1,12 @@
 global.Promise = require('bluebird');
 const Express = require('express');
 const BodyParser = require('body-parser');
+const CustomConfig = require('./../shared/CustomConfig');
 const CustomDatabase = require('./../shared/CustomDatabase');
 const CustomLogger = require('./../shared/CustomLogger');
 
+
+CustomConfig.InitialConfig();
 CustomLogger.InitialLogger();
 CustomDatabase.TryConnectLake(0);
 
