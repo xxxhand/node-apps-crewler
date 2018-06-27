@@ -14,6 +14,11 @@ exports.findDetail = function (req, res) {
 }
 
 async function _execute(packageNames = []) {
+    const restult = await _findAndSave(packageNames);
+    
+    return Promise.resolve(result);
+}
+async function _findAndSave(packageNames = []) {
     const executeResult = [];
     for (const pkg of packageNames) {
         await CustomFuncs.sleep(1000);
@@ -34,5 +39,8 @@ async function _execute(packageNames = []) {
         }
     }
     return Promise.resolve(executeResult);
+}
+async function _resultHandler(result = []) {
+
 }
 

@@ -13,9 +13,8 @@ exports.AppDetailModel = class {
     }
 }
 exports.AppDetailSequelize = DBInstance.define('AppDetailModel', {
-    id: { type: Sequelize.STRING, primaryKey: true, autoIncrement: true },
+    app_name: { type: Sequelize.STRING, primaryKey: true },
     PEGI: Sequelize.STRING,
-    app_name: Sequelize.STRING,
     category: Sequelize.STRING,
     description: Sequelize.STRING,
     icon_url: Sequelize.STRING,

@@ -34,32 +34,32 @@ module.exports = class AppDetailRepository {
         appDetailObj.iconUrl = jq('img[class="T75of ujDFqe"]').attr('src');
         appDetailObj.screenShotUrl = jq('meta[property="og:image"]').attr('content');
 
-        appDetailObj.checkLegality();
         return Promise.resolve(new CustomResult().withResult(appDetailObj));
     }
     async save(appDetailObj = new AppDetail()) {
-        // console.log(JSON.stringify(appDetailObj));
         if (!appDetailObj || !appDetailObj instanceof AppDetail) {
             return Promise.resolve(new CustomResult().withCode(400).withMessage(`Object is undefined`));
         }
         appDetailObj.checkLegality();
-        // let appDetailModel = await AppDetailModel.findOne({ app_name: appDetailObj.appName });
-        // console.log(appDetailModel);
+        let appDetailSequelize = await AppDetailSequelize.findOne({ where: { app_name: appDetailObj.appName } });
+        if (!appDetailSequelize) {
+            const appDetailModel = new AppDetailModel();
+            appDetailModel.app_name = appDetailObj.appName;
+            appDetailModel.category = appDetailObj.category;
+            appDetailModel.description = appDetailObj.description;
+            appDetailModel.icon_url = appDetailObj.iconUrl;
+            appDetailModel.PEGI = appDetailObj.PEGI;
+            appDetailModel.screenshot_url = appDetailObj.screenShotUrl;
+            appDetailModel.title = appDetailObj.title;
+            appDetailSequelize = AppDetailSequelize.build(appDetailModel);
+        } else {
+            appDetailSequelize.description = appDetailObj.description;
+            appDetailSequelize.icon_url = appDetailObj.iconUrl;
+            appDetailSequelize.screenshot_url = appDetailObj.screenShotUrl;
+        }
 
-        let appDetailModel = new AppDetailModel();
-        appDetailModel.app_name = appDetailObj.appName;
-        appDetailModel.category = appDetailObj.category;
-        appDetailModel.description = appDetailObj.description;
-        appDetailModel.icon_url = appDetailObj.iconUrl;
-        appDetailModel.PEGI = appDetailObj.PEGI;
-        appDetailModel.screenshot_url = appDetailObj.screenShotUrl;
-        appDetailModel.title = appDetailObj.title;
+        await appDetailSequelize.save();
 
-        appDetailModel = await AppDetailSequelize.create(appDetailModel);
-
-        console.log(appDetailModel);
-        
-
-        return Promise.resolve(new CustomResult());
+        return Promise.resolve(new CustomResult().withResult(appDetailObj));
     }
 }
