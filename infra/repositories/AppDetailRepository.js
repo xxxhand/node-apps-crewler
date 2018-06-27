@@ -4,14 +4,14 @@ const CustomHttpGet = require('./../../shared/CustomFuncs').tryGet;
 const AppDetail = require('./../../domain/valueObjects').AppDetail;
 const AppDetailSequelize = require('./../../infra/orms/mssql').AppDetailSequelize;
 const AppDetailModel = require('./../../infra/orms/mssql').AppDetailModel;
-
+const AppLogger = require('./../../shared/CustomLogger').AppLogger();
 // const metaTagReg = /<meta(?:>|\s+([\s\S]*?)>)/ig;
 const errorReg = /<div\sid=\"error-section\"/ig;
 
 module.exports = class AppDetailRepository {
 
     async queryDetail(packageName = '') {
-        console.log(packageName);
+        AppLogger.info(`Find package ${packageName}`);
         if (!packageName || packageName.length === 0) {
             return Promise.resolve(new CustomResult().withCode(400).withMessage(`Package name is empty`));
         }

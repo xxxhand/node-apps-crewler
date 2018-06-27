@@ -1,13 +1,16 @@
 const Cluster = require('cluster');
 const App = require('./../bootstrap/App');
+const AppLogger = require('./../shared/CustomLogger').AppLogger();
 
 
 const server = require('http').createServer(App).listen(8082);
 server.on('listening', () => {
     console.log(`Server up on ${server.address().port}`);
+    AppLogger.info(`Server up on ${server.address().port}`);
 });
 server.on('error', err => {
     console.error(`Server error ${err}`);
+    AppLogger.error(`Server error ${err}`);
     process.exit(0);
 });
 
