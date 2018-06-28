@@ -1,11 +1,11 @@
 {
   "name": "node-apps-crewler",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Crewler for apps detail on google play website",
-  "main": "bin/index.js",
+  "main": "bin/apps-crewler.js",
   "scripts": {
-    "local": "cross-env NODE_ENV=local node bin/index.js",
-    "start": "node bin/index.js",
+    "local": "cross-env NODE_ENV=local node bin/apps-crewler.js",
+    "prod": "export NODE_ENV=prod|node bin/apps-crewler.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hand",
