@@ -16,4 +16,7 @@ module.exports = class CustomResult {
         this.result = result;
         return this;
     }
+    successful() {
+        return this.code === 0;
+    }
 }
