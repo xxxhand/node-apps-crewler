@@ -17,7 +17,7 @@ exports.findDetail = function (req, res) {
 async function _execute(packageNames = []) {
     for (const pkg of packageNames) {
         await CustomFuncs.sleep(1000);
-        const customResult = await _findAndSave(packageNames);
+        const customResult = await _findAndSave(pkg);
         if (!customResult.successful()) {
             FailLogger.info(`${pkg}-- ${customResult.message}`);
         }
