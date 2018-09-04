@@ -20,6 +20,7 @@ module.exports = class AppDetailRepository {
         if (!httpGetResult.result) {
             return httpGetResult;
         }
+        
         if (errorReg.test(httpGetResult.result)) {
             return Promise.resolve(new CustomResult().withCode(400).withMessage(`Not found package ${packageName}`));
         }
@@ -40,7 +41,12 @@ module.exports = class AppDetailRepository {
         if (!appDetailObj || !appDetailObj instanceof AppDetail) {
             return Promise.resolve(new CustomResult().withCode(400).withMessage(`Object is undefined`));
         }
-        appDetailObj.checkLegality();
+        try {
+            appDetailObj.checkLegality();
+        } catch (ex) {
+            return Promise.resolve(new CustomResult().withCode(400).withMessage(ex.message));
+        }
+        
         let appDetailSequelize = await AppDetailSequelize.findOne({ where: { app_name: appDetailObj.appName } });
         if (!appDetailSequelize) {
             const appDetailModel = new AppDetailModel();

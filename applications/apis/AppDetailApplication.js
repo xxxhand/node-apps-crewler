@@ -45,6 +45,7 @@ async function _findAndSave(packageName = '') {
 }
 
 async function _findAgain() {
+    await CustomFuncs.sleep(5000);
     AppLogger.info(`Find fail again...`);
     const failLogPath = './log/fail.log';
     if (!FS.existsSync(failLogPath)) {
